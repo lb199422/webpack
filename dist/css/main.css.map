@@ -1,0 +1,1 @@
+{"version":3,"file":"css/main.css","mappings":"AAAA,EACE,SACF","sources":["webpack://webpack-base/./src/index.less"],"sourcesContent":["*{\n  color: red;\n}"],"names":[],"sourceRoot":""}
