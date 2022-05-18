@@ -1,1 +1,1 @@
-{"version":3,"file":"css/main.css","mappings":"AAAA,EACE,SACF","sources":["webpack://webpack-base/./src/index.less"],"sourcesContent":["*{\n  color: red;\n}"],"names":[],"sourceRoot":""}
+{"version":3,"file":"css/main.css","mappings":"AAAA,EACE,SAAU,CAEV,WADA,cAEF","sources":["webpack://webpack-base/./src/index.less"],"sourcesContent":["*{\n  color: red;\n  font-size:12px;\n  color:blue;\n}\n"],"names":[],"sourceRoot":""}

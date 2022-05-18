@@ -19,4 +19,8 @@ module.exports = merge(baseConfig, {
       },
     },
   },
+  // 缓存配置
+  cache: {
+    type: "memory",
+  },
 });

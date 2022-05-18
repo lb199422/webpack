@@ -1093,12 +1093,38 @@ module.exports = parent;
 /******/ 		})();
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript)
+/******/ 				scriptUrl = document.currentScript.src
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) scriptUrl = scripts[scripts.length - 1].src
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be in strict mode.
 (() => {
 "use strict";
 
+;// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
 // EXTERNAL MODULE: ./node_modules/@babel/runtime-corejs3/core-js/object/define-property.js
 var define_property = __webpack_require__(4341);
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs3/helpers/esm/createClass.js
@@ -1125,24 +1151,35 @@ function _createClass(Constructor, protoProps, staticProps) {
 
   return Constructor;
 }
-;// CONCATENATED MODULE: ./node_modules/@babel/runtime-corejs3/helpers/esm/classCallCheck.js
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
+;// CONCATENATED MODULE: ./public/assets/img/brendan.jpg
+const brendan_namespaceObject = __webpack_require__.p + "f40b93c0fe1696cee638.jpg";
 ;// CONCATENATED MODULE: ./src/index.js
 
 
 
-var Test = /*#__PURE__*/_createClass(function Test() {
-  _classCallCheck(this, Test);
 
-  document.write("hello world");
-});
+
+var Test = /*#__PURE__*/function () {
+  function Test() {
+    _classCallCheck(this, Test);
+
+    document.write("hello world");
+    this.renderImg();
+  }
+
+  _createClass(Test, [{
+    key: "renderImg",
+    value: function renderImg() {
+      var img = document.createElement("img");
+      img.src = brendan_namespaceObject;
+      document.body.appendChild(img);
+    }
+  }]);
+
+  return Test;
+}();
 
 new Test();
-
 })();
 
 /******/ })()
