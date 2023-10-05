@@ -18,6 +18,6 @@ core-js: 使用低版本js语法模拟高版本的库,也就是垫片
 **  复制public文件夹
 一般public文件夹都会放一些静态资源,可以直接根据绝对路径引入,比如图片,css,js文件等,不需要webpack进行解析,只需要打包的时候把public下内容复制到构建出口文件夹中,可以借助copy-webpack-plugin插件,安装依赖
 
+** 处理图片文件
 
-** 处理图片
-对于图片文件,webpack4使用file-loader和url-loader来处理的,但webpack5不使用这两个loader了,而是采用自带的asset-module来处理
+

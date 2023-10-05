@@ -25,20 +25,8 @@ module.exports = {
         use: 'vue-loader', // 用vue-loader去解析vue文件
       },
       {
-        test: /\.ts$/, // 匹配.ts文件
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-typescript',
-                {
-                  allExtensions: true, //支持所有文件扩展名(重要)
-                },
-              ],
-            ],
-          },
-        },
+        test: /\.ts$/,
+        use: 'babel-loader',
       },
       // 解析style css scss
       {
@@ -50,6 +38,19 @@ module.exports = {
           'postcss-loader',
           'sass-loader',
         ],
+      },
+      // 处理文件
+      {
+        test: /.(png|jpg|jpeg|gif|svg)$/, // 匹配图片文件
+        type: 'asset', // type选择asset
+        parser: {
+          dataUrlCondition: {
+            maxSize: 10 * 1024, // 小于10kb转base64位
+          },
+        },
+        generator: {
+          filename: '[name][ext]', // 文件输出目录和命名
+        },
       },
     ],
   },
