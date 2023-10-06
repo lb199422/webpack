@@ -16,16 +16,30 @@
     <svg class="icon" aria-hidden="true">
       <use xlink:href="#yibao-fire"></use>
     </svg>
-    <img :src="img" alt="" />
+    <img :src="img" alt="" class="image" />
+    <CommonForm />
   </div>
 </template>
 
 <script setup lang="ts">
 import img from './assets/images/img.jpg';
+import CommonForm from '@/components/CommonForm.vue';
 </script>
-<style scoped lang="scss">
-* {
-  color: #333;
+<style lang="scss">
+#app {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+html,
+body {
+  padding: 0;
+  margin: 0;
 }
 
 .icon {

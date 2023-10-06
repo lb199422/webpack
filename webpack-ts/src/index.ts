@@ -3,4 +3,4 @@ import App from './App.vue';
 
 import './assets/iconfont/iconfont.js';
 
-createApp(App).mount('#root');
+createApp(App).mount('#app');

@@ -83,5 +83,11 @@ module.exports = {
   // 配置extensions
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
+    alias: {
+      '@': path.join(__dirname, '../src'),
+    },
+  },
+  cache: {
+    type: 'filesystem', // 使用文件缓存
   },
 };
