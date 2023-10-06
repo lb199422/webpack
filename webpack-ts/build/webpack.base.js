@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
+  // 入口
   entry: path.join(__dirname, '../src/index.ts'), // 入口文件
   // 出口文件
   output: {
@@ -18,19 +19,26 @@ module.exports = {
     clean: true, // webpack4需要配置clean-webpack-plugin来删除dist文件,webpack5内置了
     publicPath: '/', // 打包后文件的公共前缀路径
   },
+
   module: {
     rules: [
       {
         test: /\.vue$/, // 匹配.vue文件
-        use: 'vue-loader', // 用vue-loader去解析vue文件
+        use: ['thread-loader', 'vue-loader'], // 用vue-loader去解析vue文件
       },
       {
         test: /\.ts$/,
-        use: 'babel-loader',
+        use: ['thread-loader', 'babel-loader'], // thread-loader 多线程loader
       },
-      // 解析style css scss
+      // 解析style css  postcss-loader scss
       {
-        test: /.(css|scss)$/, //匹配 css 文件
+        test: /\.css$/, //匹配所有的 css 文件
+        include: [path.resolve(__dirname, '../src')],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.scss$/, //匹配 scss 文件
+        include: [path.resolve(__dirname, '../src')],
         use: [
           'style-loader',
           'css-loader',
@@ -67,6 +75,8 @@ module.exports = {
       },
     ],
   },
+
+  // 插件
   plugins: [
     // ...
     new VueLoaderPlugin(), // vue-loader插件
@@ -80,13 +90,19 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
     }),
   ],
+
   // 配置extensions
   resolve: {
     extensions: ['.vue', '.ts', '.js', '.json'],
     alias: {
       '@': path.join(__dirname, '../src'),
     },
+    // 如果用的是pnpm 就暂时不要配置这个，会有幽灵依赖的问题，访问不到很多模块。
+    // 查找第三方模块只在本项目的node_modules中查找
+    modules: [path.resolve(__dirname, '../node_modules')],
   },
+
+  // 缓存
   cache: {
     type: 'filesystem', // 使用文件缓存
   },

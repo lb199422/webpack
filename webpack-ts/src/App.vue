@@ -16,7 +16,9 @@
     <svg class="icon" aria-hidden="true">
       <use xlink:href="#yibao-fire"></use>
     </svg>
-    <img :src="img" alt="" class="image" />
+    <div class="image-container">
+      <img :src="img" alt="" class="image" />
+    </div>
     <CommonForm />
   </div>
 </template>
@@ -31,10 +33,15 @@ import CommonForm from '@/components/CommonForm.vue';
   width: 100vw;
   overflow: hidden;
 }
-.image {
-  width: 100%;
-  height: auto;
-  display: block;
+
+.image-container {
+  width: 300px;
+  height: 100px;
+  .image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 }
 html,
 body {
