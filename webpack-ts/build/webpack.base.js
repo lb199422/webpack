@@ -1,6 +1,6 @@
 console.log('NODE_ENV', process.env.NODE_ENV);
 console.log('BASE_ENV', process.env.BASE_ENV);
-
+const isDev = process.env.NODE_ENV === 'development'; // 是否是开发模式
 const path = require('path');
 // 配置vue-loader
 const { VueLoaderPlugin } = require('vue-loader');
@@ -8,6 +8,8 @@ const { VueLoaderPlugin } = require('vue-loader');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //
 const webpack = require('webpack');
+// 抽取css 样式
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   // 入口
@@ -34,13 +36,17 @@ module.exports = {
       {
         test: /\.css$/, //匹配所有的 css 文件
         include: [path.resolve(__dirname, '../src')],
-        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        use: [
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+        ],
       },
       {
         test: /\.scss$/, //匹配 scss 文件
         include: [path.resolve(__dirname, '../src')],
         use: [
-          'style-loader',
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
           // css自动前缀
           'postcss-loader',

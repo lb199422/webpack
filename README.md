@@ -50,3 +50,57 @@ node_modules模块
 
 使用require和import引入模块时如果有准确的相对或者绝对路径,就会去按路径查询,如果引入的模块没有路径,会优先查询node核心模块,如果没有找到会去当前目录下node_modules中寻找,如果没有找到会查从父级文件夹查找node_modules,一直查到系统node全局模块。
 这样会有两个问题,一个是当前项目没有安装某个依赖,但是上一级目录下node_modules或者全局模块有安装,就也会引入成功,但是部署到服务器时可能就会找不到造成报错,另一个问题就是一级一级查询比较消耗时间。可以告诉webpack搜索目录范围,来规避这两个问题。
+
+##  devtool配置
+
+开发过程中或者打包后的代码都是webpack处理后的代码,如果进行调试肯定希望看到源代码,而不是编译后的代码, source map就是用来做源码映射的,不同的映射模式会明显影响到构建和重新构建的速度, devtool选项就是webpack提供的选择源码映射方式的配置。
+devtool的命名规则为 ^(inline-|hidden-|eval-)?(nosources-)?(cheap-(module-)?)?source-map$
+
+| **关键字** | **描述**                                                 |
+| ---------- | -------------------------------------------------------- |
+| inline     | 代码内通过 dataUrl 形式引入 SourceMap                    |
+| hidden     | 生成 SourceMap 文件,但不使用                             |
+| eval       | `eval(...)` 形式执行代码,通过 dataUrl 形式引入 SourceMap |
+| nosources  | 不生成 SourceMap                                         |
+| cheap      | 只需要定位到行信息,不需要列信息                          |
+| module     | 展示源代码中的错误位置                                   |
+
+关键字描述inline代码内通过 dataUrl 形式引入 SourceMaphidden生成 SourceMap 文件,但不使用evaleval(...) 形式执行代码,通过 dataUrl 形式引入 SourceMapnosources不生成 SourceMapcheap只需要定位到行信息,不需要列信息module展示源代码中的错误位置
+开发环境推荐：eval-cheap-module-source-map
+
+本地开发首次打包慢点没关系,因为 eval 缓存的原因,  热更新会很快
+开发中,我们每行代码不会写的太长,只需要定位到行就行,所以加上 cheap
+我们希望能够找到源代码的错误,而不是打包后的,所以需要加上 module
+
+
+
+## 抽取css样式文件
+
+在开发环境我们希望**css**嵌入在**style**标签里面,方便样式热替换,但打包时我们希望把**css**单独抽离出来,方便配置缓存策略。而插件[mini-css-extract-plugin](https://link.juejin.cn/?target=https%3A%2F%2Fgithub.com%2Fwebpack-contrib%2Fmini-css-extract-plugin)就是来帮我们做这件事的,安装依赖：
+
+```js
+npm i mini-css-extract-plugin -D
+npm i css-minimizer-webpack-plugin -D  // 压缩css 
+```
+
+## 压缩js文件
+
+```js
+npm i terser-webpack-plugin -D
+optimization: {
+    // 压缩css
+    minimizer: [
+      new CssMinimizerPlugin(), // 压缩css
+      new TerserPlugin({
+        // 压缩js
+        parallel: true, // 开启多线程压缩
+        terserOptions: {
+          compress: {
+            pure_funcs: ['console.log'], // 删除console.log
+          },
+        },
+      }),
+    ],
+  },
+```
+

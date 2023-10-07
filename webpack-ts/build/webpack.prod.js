@@ -5,7 +5,12 @@ const baseConfig = require('./webpack.base.js');
 const path = require('path');
 // 复制public 下文件
 const CopyPlugin = require('copy-webpack-plugin');
-
+// 抽离css插件
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// 压缩css
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+// 压缩js
+const TerserPlugin = require('terser-webpack-plugin');
 module.exports = merge(baseConfig, {
   mode: 'production', // 生产模式,会开启tree-shaking和压缩代码,以及其他优化
   plugins: [
@@ -21,5 +26,24 @@ module.exports = merge(baseConfig, {
         },
       ],
     }),
+    // 抽离css插件
+    new MiniCssExtractPlugin({
+      filename: 'static/css/[name].css', // 抽离css的输出目录和名称
+    }),
   ],
+  optimization: {
+    // 压缩css
+    minimizer: [
+      new CssMinimizerPlugin(), // 压缩css
+      new TerserPlugin({
+        // 压缩js
+        parallel: true, // 开启多线程压缩
+        terserOptions: {
+          compress: {
+            pure_funcs: ['console.log'], // 删除console.log
+          },
+        },
+      }),
+    ],
+  },
 });

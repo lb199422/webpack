@@ -14,5 +14,13 @@ module.exports = merge(baseConfig, {
     static: {
       directory: path.join(__dirname, '../public'), //托管静态资源public文件夹
     },
+    client: {
+      logging: 'info',
+      overlay: {
+        errors: true,
+        warnings: true,
+      },
+      progress: true,
+    },
   },
 });
