@@ -132,3 +132,45 @@ optimization: {
   filename:'static/images/[name].[contenthash:8][ext]' // 加上[contenthash:8]
 
 ```
+
+## 代码分割第三方包和公共模块
+
+
+
+一般第三方包的代码变化频率比较小,可以单独把**node_modules**中的代码单独打包, 当第三包代码没变化时,对应**chunkhash**值也不会变化,可以有效利用浏览器缓存，还有公共的模块也可以提取出来,避免重复打包加大代码整体体积, **webpack**提供了代码分隔功能, 需要我们手动在优化项[optimization](https://link.juejin.cn?target=https%3A%2F%2Fwebpack.js.org%2Fconfiguration%2Foptimization%2F)中手动配置下代码分隔[splitChunks](https://link.juejin.cn?target=https%3A%2F%2Fwebpack.js.org%2Fconfiguration%2Foptimization%2F%23optimizationsplitchunks)规则。
+
+```js
+module.exports = {
+  // ...
+  optimization: {
+    // ...
+    splitChunks: { // 分隔代码
+      cacheGroups: {
+        vendors: { // 提取node_modules代码
+          test: /node_modules/, // 只匹配node_modules里面的模块
+          name: 'vendors', // 提取文件命名为vendors,js后缀和chunkhash会自动加
+          minChunks: 1, // 只要使用一次就提取出来
+          chunks: 'initial', // 只提取初始化就能获取到的模块,不管异步的
+          minSize: 0, // 提取代码体积大于0就提取出来
+          priority: 1, // 提取优先级为1
+        },
+        commons: { // 提取页面公共代码
+          name: 'commons', // 提取文件命名为commons
+          minChunks: 2, // 只要使用两次就提取出来
+          chunks: 'initial', // 只提取初始化就能获取到的模块,不管异步的
+          minSize: 0, // 提取代码体积大于0就提取出来
+        }
+      }
+    }
+  }
+}
+
+```
+
+测试一下,此时**verdors.js**的**chunkhash**是**6aeb3c4c.js**,**main.js**文件的chunkhash是**f70933df**,改动一下**App.vue**,再次打包,可以看到下图**main.js**的chunkhash值变化了,但是**vendors.js**的chunkhash还是原先的,这样发版后,浏览器就可以继续使用缓存中的**verdors.ec725ef1.js**,只需要重新请求**main.js**就可以了。
+
+## tree-shaking清理未引用js
+
+## tree-shaking清理未使用css
+
+## 打包时生成gzip文件

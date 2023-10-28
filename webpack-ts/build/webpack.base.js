@@ -16,8 +16,8 @@ module.exports = {
   entry: path.join(__dirname, '../src/index.ts'), // 入口文件
   // 出口文件
   output: {
-    filename: 'bundle.[contenthash:8].js', // 输出js的名称
-    path: path.join(__dirname, '../disk'), // 打包结果输出路径
+    filename: 'js/[name].[contenthash:8].js', // 输出js的名称
+    path: path.join(__dirname, '../dist'), // 打包结果输出路径
     clean: true, // webpack4需要配置clean-webpack-plugin来删除dist文件,webpack5内置了
     publicPath: '/', // 打包后文件的公共前缀路径
   },
@@ -63,7 +63,7 @@ module.exports = {
           },
         },
         generator: {
-          filename: 'fonts.[name][ext]', // 文件输出目录和命名
+          filename: 'fonts.[name].[contenthash:8][ext]', // 文件输出目录和命名
         },
       },
       // 处理文件
@@ -76,7 +76,7 @@ module.exports = {
           },
         },
         generator: {
-          filename: '[name][ext]', // 文件输出目录和命名
+          filename: 'img/[name].[contenthash:8][ext]', // 文件输出目录和命名
         },
       },
     ],
