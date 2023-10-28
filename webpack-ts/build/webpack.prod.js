@@ -32,11 +32,11 @@ module.exports = merge(baseConfig, {
     }),
   ],
   optimization: {
-    // 压缩css
     minimizer: [
+      // 压缩css
       new CssMinimizerPlugin(), // 压缩css
+      // 压缩js
       new TerserPlugin({
-        // 压缩js
         parallel: true, // 开启多线程压缩
         terserOptions: {
           compress: {
