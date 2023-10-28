@@ -34,3 +34,5 @@ webpack5 较于 webpack4,新增了持久化缓存、改进缓存算法等优化,
 
 webpack的loader默认在单线程执行,现代电脑一般都有多核cpu,可以借助多核cpu开启多线程loader解析,可以极大地提升loader解析的速度,thread-loader就是用来开启多进程解析loader
 由于thread-loader不支持抽离css插件MiniCssExtractPlugin.loader(下面会讲),所以这里只配置了多进程解析js,开启多线程也是需要启动时间,大约500ms左右,所以适合规模比较大的项目
+
+## 模块联邦
