@@ -33,7 +33,6 @@ import CommonForm from '@/components/CommonForm.vue';
   width: 100vw;
   overflow: hidden;
 }
-
 .image-container {
   width: 300px;
   height: 100px;
@@ -48,7 +47,6 @@ body {
   padding: 0;
   margin: 0;
 }
-
 .icon {
   width: 1em;
   height: 1em;

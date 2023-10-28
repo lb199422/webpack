@@ -10,8 +10,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 // 抽取css 样式
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-module.exports = {
+// webpack 打包进度美化
+const WebpackBar = require('webpackbar');
+const config = {
   // 入口
   entry: path.join(__dirname, '../src/index.ts'), // 入口文件
   // 出口文件
@@ -21,6 +22,23 @@ module.exports = {
     clean: true, // webpack4需要配置clean-webpack-plugin来删除dist文件,webpack5内置了
     publicPath: '/', // 打包后文件的公共前缀路径
   },
+
+  // 插件
+  plugins: [
+    // ...
+    new VueLoaderPlugin(), // vue-loader插件
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../public/index.html'), // 模板取定义root节点的模板
+      inject: true, // 自动注入静态资源
+    }),
+    //配置环境变量
+    new webpack.DefinePlugin({
+      'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+    // 打包进度美化
+    new WebpackBar(),
+  ],
 
   module: {
     rules: [
@@ -36,17 +54,13 @@ module.exports = {
       {
         test: /\.css$/, //匹配所有的 css 文件
         include: [path.resolve(__dirname, '../src')],
-        use: [
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
-          'postcss-loader',
-        ],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'],
       },
       {
         test: /\.scss$/, //匹配 scss 文件
         include: [path.resolve(__dirname, '../src')],
         use: [
-          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          MiniCssExtractPlugin.loader,
           'css-loader',
           // css自动前缀
           'postcss-loader',
@@ -70,6 +84,7 @@ module.exports = {
       {
         test: /.(png|jpg|jpeg|gif|svg)$/, // 匹配图片文件
         type: 'asset', // type选择asset
+        exclude: /node_modules/,
         parser: {
           dataUrlCondition: {
             maxSize: 10 * 1024, // 小于10kb转base64位
@@ -81,21 +96,6 @@ module.exports = {
       },
     ],
   },
-
-  // 插件
-  plugins: [
-    // ...
-    new VueLoaderPlugin(), // vue-loader插件
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html'), // 模板取定义root节点的模板
-      inject: true, // 自动注入静态资源
-    }),
-    //配置环境变量
-    new webpack.DefinePlugin({
-      'process.env.BASE_ENV': JSON.stringify(process.env.BASE_ENV),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    }),
-  ],
 
   // 配置extensions
   resolve: {
@@ -113,3 +113,4 @@ module.exports = {
     type: 'filesystem', // 使用文件缓存
   },
 };
+module.exports = config;

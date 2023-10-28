@@ -26,7 +26,29 @@
 
 
 ## 构建耗时分析
-  speed-measure-webpack-plugin
+  speed-measure-webpack-plugin  
+  但是和mini-css-extract-plugin 插件冲突推荐 使用1.3.6
+
+```js
+// webpack.config.js
+
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const config = {
+  // ...
+  plugins: [
+    // Whatever other plugins you may have
+  ]
+};
+
+const configWithTimeMeasures = new SpeedMeasurePlugin().wrap(config);
+configWithTimeMeasures.plugins.push(new MiniCssExtractPlugin({}));
+
+module.exports = configWithTimeMeasures;
+```
+
+
 
 ## 开启持久化存储缓存
 

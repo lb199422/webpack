@@ -11,7 +11,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 // 压缩js
 const TerserPlugin = require('terser-webpack-plugin');
-module.exports = merge(baseConfig, {
+
+// 配置对象
+const config = merge(baseConfig, {
   mode: 'production', // 生产模式,会开启tree-shaking和压缩代码,以及其他优化
   plugins: [
     // 复制文件插件
@@ -26,10 +28,10 @@ module.exports = merge(baseConfig, {
         },
       ],
     }),
-    // 抽离css插件
-    new MiniCssExtractPlugin({
-      filename: 'css/[name].[contenthash:8].css', // 抽离css的输出目录和名称
-    }),
+    // 抽离css插件  兼容写法这里注释
+    // new MiniCssExtractPlugin({
+    //   filename: 'css/[name].[contenthash:8].css', // 抽离css的输出目录和名称
+    // }),
   ],
   optimization: {
     minimizer: [
@@ -68,3 +70,17 @@ module.exports = merge(baseConfig, {
     },
   },
 });
+
+// 时间分析工具 speed-measure-webpack-plugin
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const smp = new SpeedMeasurePlugin();
+// 兼容MiniCssExtractPlugin  SpeedMeasurePlugin
+let SpeedMeasurePluginConfig = smp.wrap(config);
+SpeedMeasurePluginConfig.plugins.push(
+  new MiniCssExtractPlugin({
+    filename: 'css/[name].[contenthash:8].css', // 抽离css的输出目录和名称
+  })
+);
+
+module.exports = SpeedMeasurePluginConfig;
+// module.exports = config;
