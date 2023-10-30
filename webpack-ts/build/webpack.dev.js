@@ -16,7 +16,7 @@ const config = merge(baseConfig, {
       directory: path.join(__dirname, '../public'), //托管静态资源public文件夹
     },
     client: {
-      logging: 'info',
+      logging: 'warn',
       overlay: {
         errors: true,
         warnings: true,
